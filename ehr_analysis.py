@@ -1,6 +1,7 @@
 import datetime
 
 
+
 """
 Complexity: for fucntion Parse Data is O1+O1+ON(N+1)+O(1) 
 O(3) + O(N^2)+O(N) 
@@ -28,7 +29,7 @@ we drop the constant factor
 """
 
 
-def num_older_than(age: int, data: dict[str, list[str]]) -> int:
+def num_older_than(age: int, data: [[]]) -> int:
     num = 0  # O(1)
     for line in data[1:]:  # (N)
         # print(line)
@@ -52,9 +53,7 @@ We drop the constant factor
 """
 
 
-def sick_patients(
-    lab: str, gt_lt: str, value: float, data: dict[str, list[str]]
-) -> list[str]:
+def sick_patients(lab: str, gt_lt: str, value: float, data: [[]]) -> list[str]:
     output = []  # O(1)
     for line in data[1:]:  # (N)
         # print(line)
