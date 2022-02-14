@@ -18,8 +18,6 @@ There's suite of tests in our EHR library using the pytest framework, for all fu
     
  # Information about the expected input file formats
     
-    * API description
-    * examples
 
  # For contributors:
 
