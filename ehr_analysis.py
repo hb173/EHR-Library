@@ -9,13 +9,15 @@ Dropping 3 and N
 
 """
 
-def parse_data(filename: str) -> str:
+
+def parse_data(filename: str) -> list:
     with open(filename, "r") as data:  # O(1)
         lines = []  # O(1)
         for line in data:  # (N)
             p = line.split("\t")  # O(N)
             lines.append(p)  # O(1)
     return lines  # O(1)
+
 
 """
 Complexity: for fucntion num_older_than is 
@@ -26,18 +28,19 @@ we drop the constant factor
 """
 
 
-def num_older_than(age, filename):
+def num_older_than(age: int, data: dict[str, list[str]]) -> int:
     num = 0  # O(1)
-    lines=parse_data(filename) #O(1)
-    for line in lines[1:]: # (N)
-            age_file = datetime.datetime.now() - datetime.datetime.strptime(
-                line[2], r"%Y-%m-%d %H:%M:%S.%f"
-            )  # O(1)
-            years = age_file.total_seconds() / 31536000  # O(1)
-            # print(years)
-            if years > age:  # O(1)
-                num = num + 1  # O(2)
+    for line in data[1:]:  # (N)
+        # print(line)
+        age_file = datetime.datetime.now() - datetime.datetime.strptime(
+            line[2], r"%Y-%m-%d %H:%M:%S.%f"
+        )  # O(1)
+        years = age_file.total_seconds() / 31536000  # O(1)
+        # print(years)
+        if years > age:  # O(1)
+            num = num + 1  # O(2)"""
     return num  # O(1)
+
 
 """
 Complexity: for sick_patients is:
@@ -49,26 +52,30 @@ We drop the constant factor
 """
 
 
-def sick_patients(lab, gt_lt, value, filename):
-    lines=parse_data(filename) #O(1)
+def sick_patients(
+    lab: str, gt_lt: str, value: float, data: dict[str, list[str]]
+) -> list[str]:
     output = []  # O(1)
-    for line in lines[1:]: #(N)
-            if gt_lt == ">":  # O(1)
-                if (line[2] == lab) and (float(line[3]) > value):  # O(2)
-                    output.append(line[0])  # O(1)
-            elif gt_lt == "<":  # O(1)
-                if (line[2] == lab) and (float(line[3]) < value):  # O(2)
-                    output.append(line[0])  # O(1)
-            #elif gt_lt == "=":
-                #if (line[2] == lab) and (float(line[3]) == value):
-                    #output.append(line[0])
+    for line in data[1:]:  # (N)
+        # print(line)
+        if gt_lt == ">":  # O(1)
+            if (line[2] == lab) and (float(line[3]) > value):  # O(2)
+                output.append(line[0])  # O(1)
+        elif gt_lt == "<":  # O(1)
+            if (line[2] == lab) and (float(line[3]) < value):  # O(2)
+                output.append(line[0])  # O(1)
+        # elif gt_lt == "=":
+        # if (line[2] == lab) and (float(line[3]) == value):
+        # output.append(line[0])
     if output:
-        finaloutput = list(set(output))  #O(1)
+        finaloutput = list(set(output))  # O(1)
     else:
-        finaloutput="Enter valid argument" #O(1)
+        finaloutput = "Enter valid argument"  # O(1)
     return finaloutput  # O(1)
 
 
 if __name__ == "__main__":
-    print(num_older_than(51.2,"PatientCorePopulatedTable.txt"))
-    print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0,"LabsCorePopulatedTable.txt"))
+    data = parse_data("PatientCorePopulatedTable.txt")
+    print(num_older_than(51.2, data))
+    data = parse_data("LabsCorePopulatedTable.txt")
+    print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0, data))
