@@ -63,6 +63,8 @@ def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[
         elif gt_lt == "<":
             if (line[2] == lab) and (float(line[3]) < value):
                 output.append(line[0])
+        else:
+            raise ValueError("gt_lt is expected to be '<' or '>'")
 
     if output:
         finaloutput = list(set(output))
