@@ -52,7 +52,6 @@ We drop the constant factor
 =0(N) as our complexity of this function.
 """
 
-
 def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[str]:
     output = []
     for line in data[1:]:
@@ -65,12 +64,7 @@ def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[
                 output.append(line[0])
         else:
             raise ValueError("gt_lt is expected to be '<' or '>'")
-
-    if output:
-        finaloutput = list(set(output))
-    else:
-        raise ValueError(f"Unexpected input value")
-    return finaloutput
+    return output
 
 if __name__ == "__main__":
     data = parse_data("PatientCorePopulatedTable.txt")
