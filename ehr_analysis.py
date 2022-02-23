@@ -11,7 +11,7 @@ Dropping 3 and N
 """
 
 
-def parse_data(filename: str) -> list[list]:
+def parse_data(filename: str) -> list:
     with open(filename, "r") as data:  # O(1)
         lines = []  # O(1)
         for line in data:  # (N)
@@ -29,7 +29,7 @@ we drop the constant factor
 """
 
 
-def num_older_than(age: float, data: list[list]) -> float:
+def num_older_than(age: float, data: list[str]) -> float:
     num = 0  # O(1)
     for line in data[1:]:  # (N)
 
@@ -52,7 +52,8 @@ We drop the constant factor
 =0(N) as our complexity of this function.
 """
 
-def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[str]:
+
+def sick_patients(lab: str, gt_lt: str, value: float, data: list[str]) -> list[str]:
     output = []
     for line in data[1:]:
 
