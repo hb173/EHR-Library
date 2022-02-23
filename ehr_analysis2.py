@@ -11,7 +11,7 @@ Dropping 3 and N
 """
 
 
-def parse_data(filename: str) -> list:
+def parse_data(filename: str) -> list[list]:
     with open(filename, "r") as data:  # O(1)
         lines = []  # O(1)
         for line in data:  # (N)
@@ -29,15 +29,15 @@ we drop the constant factor
 """
 
 
-def num_older_than(age: int, data: [[]]) -> int:
+def num_older_than(age: float, data: list[list]) -> float:
     num = 0  # O(1)
     for line in data[1:]:  # (N)
-        # print(line)
+
         age_file = datetime.datetime.now() - datetime.datetime.strptime(
             line[2], r"%Y-%m-%d %H:%M:%S.%f"
         )  # O(1)
         years = age_file.total_seconds() / 31536000  # O(1)
-        # print(years)
+
         if years > age:  # O(1)
             num = num + 1  # O(2)"""
     return num  # O(1)
@@ -53,36 +53,34 @@ We drop the constant factor
 """
 
 
-def sick_patients(lab: str, gt_lt: str, value: float, data: [[]]) -> list[str]:
-    output = []  # O(1)
-    for line in data[1:]:  # (N)
-        # print(line)
-        if gt_lt == ">":  # O(1)
-            if (line[2] == lab) and (float(line[3]) > value):  # O(2)
-                output.append(line[0])  # O(1)
-        elif gt_lt == "<":  # O(1)
-            if (line[2] == lab) and (float(line[3]) < value):  # O(2)
-                output.append(line[0])  # O(1)
-        # elif gt_lt == "=":
-        # if (line[2] == lab) and (float(line[3]) == value):
-        # output.append(line[0])
+def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[str]:
+    output = []
+    for line in data[1:]:
+
+        if gt_lt == ">":
+            if (line[2] == lab) and (float(line[3]) > value):
+                output.append(line[0])
+        elif gt_lt == "<":
+            if (line[2] == lab) and (float(line[3]) < value):
+                output.append(line[0])
+
     if output:
-        finaloutput = list(set(output))  # O(1)
+        finaloutput = list(set(output))
     else:
-        finaloutput = "Enter valid argument"  # O(1)
-    return finaloutput  # O(1)
+        raise ValueError(f"Unexpected input value")
+    return finaloutput
 
 
-def admission(patient_id: str, data: [[]]) -> int:
+def admission(patient_id: str, data: list[list]) -> int:
 
-    patient = [line for line in data if line[0] == patient_id][0]  # O(1)
-    # print(patient[-1])
+    patient = [line for line in data if line[0] == patient_id][0]
+
     age_file = datetime.datetime.now() - datetime.datetime.strptime(
         patient[-1], r"%Y-%m-%d %H:%M:%S.%f "
-    )  # O(1)
-    years = age_file.total_seconds() / 31536000  # O(1)
-    # print(years)
-    return round(years)  # O(1)
+    )
+    years = age_file.total_seconds() / 31536000
+
+    return round(years)
 
 
 if __name__ == "__main__":
