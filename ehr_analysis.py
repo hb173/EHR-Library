@@ -7,7 +7,6 @@ Complexity: for fucntion Parse Data is O1+O1+ON(N+1)+O(1)
 O(3) + O(N^2)+O(N) 
 Dropping 3 and N 
 = 0(N^2) as our complexity of this function.
-
 """
 
 
@@ -53,7 +52,9 @@ We drop the constant factor
 """
 
 
-def sick_patients(lab: str, gt_lt: str, value: float, data: list[list[str]]) -> list[str]:
+def sick_patients(
+    lab: str, gt_lt: str, value: float, data: list[list[str]]
+) -> list[str]:
     output = []
     for line in data[1:]:
 
