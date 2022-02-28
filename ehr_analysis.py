@@ -29,7 +29,7 @@ we drop the constant factor
 """
 
 
-def num_older_than(age: float, data: list[str]) -> float:
+def num_older_than(age: float, data: list[list[str]]) -> float:
     num = 0  # O(1)
     for line in data[1:]:  # (N)
 
