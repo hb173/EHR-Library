@@ -7,11 +7,10 @@ Complexity: for fucntion Parse Data is O1+O1+ON(N+1)+O(1)
 O(3) + O(N^2)+O(N) 
 Dropping 3 and N 
 = 0(N^2) as our complexity of this function.
-
 """
 
 
-def parse_data(filename: str) -> list[list]:
+def parse_data(filename: str) -> list[list[str]]:
     with open(filename, "r") as data:  # O(1)
         lines = []  # O(1)
         for line in data:  # (N)
@@ -29,7 +28,7 @@ we drop the constant factor
 """
 
 
-def num_older_than(age: float, data: list[list]) -> float:
+def num_older_than(age: float, data: list[list[str]]) -> float:
     num = 0  # O(1)
     for line in data[1:]:  # (N)
 
@@ -53,7 +52,9 @@ We drop the constant factor
 """
 
 
-def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[str]:
+def sick_patients(
+    lab: str, gt_lt: str, value: float, data: list[list[str]]
+) -> list[str]:
     output = []
     for line in data[1:]:
 
@@ -63,15 +64,12 @@ def sick_patients(lab: str, gt_lt: str, value: float, data: list[list]) -> list[
         elif gt_lt == "<":
             if (line[2] == lab) and (float(line[3]) < value):
                 output.append(line[0])
-
-    if output:
-        finaloutput = list(set(output))
-    else:
-        raise ValueError(f"Unexpected input value")
-    return finaloutput
+        else:
+            raise ValueError("gt_lt is expected to be '<' or '>'")
+    return output
 
 
-def admission(patient_id: str, data: list[list]) -> int:
+def admission(patient_id: str, data: list[list[str]]) -> int:
 
     patient = [line for line in data if line[0] == patient_id][0]
 
