@@ -11,7 +11,7 @@ Dropping 3 and N
 """
 
 
-def parse_data(filename: str) -> list:
+def parse_data(filename: str) -> list[list[str]]:
     with open(filename, "r") as data:  # O(1)
         lines = []  # O(1)
         for line in data:  # (N)
