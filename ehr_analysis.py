@@ -53,7 +53,7 @@ We drop the constant factor
 """
 
 
-def sick_patients(lab: str, gt_lt: str, value: float, data: list[str]) -> list[str]:
+def sick_patients(lab: str, gt_lt: str, value: float, data: list[list[str]]) -> list[str]:
     output = []
     for line in data[1:]:
 
