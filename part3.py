@@ -2,7 +2,6 @@ import datetime
 import pytest
 
 
-
 class patient:
     def __init__(self, dob, gender, race, patient_id):
         self.gender = gender
@@ -27,20 +26,30 @@ class lab:
         self.labname = labname
 
 
-def parse_data(filename: str, type) -> list[str]:
+def parse_data_lab(filename: str) -> list[lab]:
     list_objects = []
     first_line = 0
     with open(filename, "r") as data:
         for line in data:
-            # print("in")
+
             if first_line == 0:
                 first_line = 1
                 continue
             p = line.split("\t")
-            if type == "Patient":
-                list_objects.append(patient(p[2], p[1], p[3], p[0]))  # O(1)
-            else:
-                list_objects.append(lab(p[3], p[4], p[2]))
+            list_objects.append(lab(p[3], p[4], p[2]))
+    return list_objects
+
+
+def parse_data_patient(filename: str) -> list[patient]:
+    list_objects = []
+    first_line = 0
+    with open(filename, "r") as data:
+        for line in data:
+            if first_line == 0:
+                first_line = 1
+                continue
+            p = line.split("\t")
+            list_objects.append(patient(p[2], p[1], p[3], p[0]))
     return list_objects
 
 
@@ -54,7 +63,7 @@ def num_older_than(age: float, list_of_patients) -> float:
     return num
 
 
-def sick_patients(lab: str, gt_lt: str, value: float, list_labs) -> list[str]:
+def sick_patients(lab: str, gt_lt: str, value: float, list_labs) -> int:
     output = []
     for labs in list_labs:
         if gt_lt == ">":
@@ -69,21 +78,17 @@ def sick_patients(lab: str, gt_lt: str, value: float, list_labs) -> list[str]:
     return len(output)
 
 
-def admission(patient_id: str, list_patient) -> int:
+def admission(patient_id: str, list_patient) -> patient:
     for patients in list_patient:
         if patients.patient_id == patient_id:
-            return patients.dob, patients.age, patients.race, patients.gender
+            break
+    return patients
 
 
 if __name__ == "__main__":
-    list_patients = data = parse_data("PatientCorePopulatedTable.txt", type="Patient")
+    list_patients = parse_data_patient("PatientCorePopulatedTable.txt")
     print(num_older_than(51.2, list_patients))
-    list_labs = parse_data("LabsCorePopulatedTable.txt", type)
+    list_labs = parse_data_lab("LabsCorePopulatedTable.txt")
     print(sick_patients("METABOLIC: ALBUMIN", ">", 5.95, list_labs))
-    list_patients = parse_data("PatientCorePopulatedTable.txt", type="Patient")
-    print(
-        admission(
-            "DB22A4D9-7E4D-485C-916A-9CD1386507FB",
-            list_patients,
-        )
-    )
+    patient1 = admission("FB2ABB23-C9D0-4D09-8464-49BF0B982F0F", list_patients)
+    print(patient1.age, patient1.dob, patient1.race)
