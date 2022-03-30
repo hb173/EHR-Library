@@ -1,5 +1,7 @@
 import datetime
+
 import pytest
+
 
 
 """
@@ -86,3 +88,4 @@ if __name__ == "__main__":
     data = parse_data("LabsCorePopulatedTable.txt")
     print(sick_patients("METABOLIC: ALBUMIN", ">", 5.95, data))
     print(admission("1A8791E3-A61C-455A-8DEE-763EB90C9B2C", data))
+
