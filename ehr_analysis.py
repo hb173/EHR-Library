@@ -1,5 +1,5 @@
 import datetime
-
+import pytest
 
 
 """
@@ -57,7 +57,6 @@ def sick_patients(
 ) -> list[str]:
     output = []
     for line in data[1:]:
-
         if gt_lt == ">":
             if (line[2] == lab) and (float(line[3]) > value):
                 output.append(line[0])
@@ -68,8 +67,22 @@ def sick_patients(
             raise ValueError("gt_lt is expected to be '<' or '>'")
     return output
 
+
+def admission(patient_id: str, data: list[list[str]]) -> int:
+
+    patient = [line for line in data if line[0] == patient_id][0]
+
+    age_file = datetime.datetime.now() - datetime.datetime.strptime(
+        patient[-1], r"%Y-%m-%d %H:%M:%S.%f "
+    )
+    years = age_file.total_seconds() / 31536000
+
+    return round(years)
+
+
 if __name__ == "__main__":
     data = parse_data("PatientCorePopulatedTable.txt")
     print(num_older_than(51.2, data))
     data = parse_data("LabsCorePopulatedTable.txt")
     print(sick_patients("METABOLIC: ALBUMIN", ">", 5.95, data))
+    print(admission("1A8791E3-A61C-455A-8DEE-763EB90C9B2C", data))
