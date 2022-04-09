@@ -14,7 +14,7 @@ from assingmentone import (
         (
             51.2,
             "Patients.txt",
-            2,
+            3,
         )
     ],
 )
@@ -41,15 +41,18 @@ def test_2(lab, gt_lt, value, filename, answer):
 
 
 @pytest.mark.parametrize(
-    "patient_id, filename,answer",
+    "patient_id, filename, filename1, answer",
     [
         (
-            "646",
+            "928",
             "index.txt",
-            30,
+            "patients.txt",
+            77,
         )
     ],
 )
-def test_3(patient_id, filename, answer):
-    data = parse_data(filename)
-    assert answer == admission(patient_id, data)
+def test_3(patient_id, filename, filename1, answer):
+    lab_data = parse_data(filename)
+    patient_data = parse_data(filename1)
+
+    assert answer == admission(patient_id, lab_data, patient_data)
