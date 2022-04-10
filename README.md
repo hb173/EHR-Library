@@ -1,10 +1,6 @@
-# EHR cumulative project, part 2
+# EHR cumulative project, part 3
 
-This project is about developing a Python module that provides some simple analytical capabilities on some (synthetic) EHR data with suite of tests in our EHR library using the pytest framework, for all of the functions in our module. The data is provided from:
-
-* A table of patients with demographic data: `PatientCorePopulatedTable.txt`
-* A table of laboratory results: `LabsCorePopulatedTable.txt`
-
+This project is about developing a Python module that provides some simple analytical capabilities on some (synthetic) EHR data with suite of tests in our EHR library using the pytest framework, for all of the functions in our module. 
 
 # For end users:
 
