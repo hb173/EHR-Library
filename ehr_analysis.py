@@ -1,5 +1,5 @@
 import datetime
-
+import pytest
 
 
 """
@@ -57,7 +57,6 @@ def sick_patients(
 ) -> list[str]:
     output = []
     for line in data[1:]:
-
         if gt_lt == ">":
             if (line[2] == lab) and (float(line[3]) > value):
                 output.append(line[0])
@@ -68,8 +67,43 @@ def sick_patients(
             raise ValueError("gt_lt is expected to be '<' or '>'")
     return output
 
+
+def admission(
+    patient_id: str, lab_data: list[list[str]], patient_data: list[list[str]]
+) -> int:
+    # list of all lab date time for patient id specified
+    date_time = []
+
+    for i in range(len(lab_data)):
+        # header is counted and hence we look at all i values above 0
+        if i != 0:
+            if lab_data[i][0] == patient_id:
+                lab_date_time = lab_data[i][-1].rstrip("\n")
+
+                date_time.append(
+                    datetime.datetime.strptime(lab_date_time, r"%Y-%m-%d %H:%M:%S.%f")
+                )
+
+    # first chronological admission of patient id
+    min_date_time = min(date_time)
+    # print("First Chronological Lab:", min_date_time)
+
+    dob = None
+    for i in patient_data:
+        if patient_id == i[0]:
+            dob = i[2]
+    age_file = min_date_time - datetime.datetime.strptime(dob, r"%Y-%m-%d %H:%M:%S.%f")
+    years = age_file.total_seconds() / 31536000
+
+    return round(years)
+
+
 if __name__ == "__main__":
-    data = parse_data("PatientCorePopulatedTable.txt")
-    print(num_older_than(51.2, data))
+    data1 = parse_data("PatientCorePopulatedTable.txt")
+    print(num_older_than(51.2, data1))
     data = parse_data("LabsCorePopulatedTable.txt")
+    patient_data = parse_data("PatientCorePopulatedTable.txt")
+    lab_data = parse_data("LabsCorePopulatedTable.txt")
+
     print(sick_patients("METABOLIC: ALBUMIN", ">", 5.95, data))
+    print(admission("81C5B13B-F6B2-4E57-9593-6E7E4C13B2CE", lab_data, patient_data))
