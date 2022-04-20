@@ -3,7 +3,9 @@ import pytest
 
 
 class Patient:
-    def __init__(self, patient_id, gender, race, dob, labss):
+    def __init__(
+        self, patient_id: str, gender: str, race: str, dob: str, labss: str
+    ) -> str:
         self.patient_id = patient_id
         self.gender = gender
         self.race = race
@@ -18,7 +20,7 @@ class Patient:
 
 
 class Lab:
-    def __init__(self, labname:str, value:float, unit:str, labdate:str):
+    def __init__(self, labname: str, value: float, unit: str, labdate: str) -> str:
         self.labname = labname
         self.value = float(value)
         self.unit = unit
@@ -64,7 +66,7 @@ def parse_data_patient(pat_filename: str, lab_filename: str) -> list[Patient]:
     return pat_objects
 
 
-def num_older_than(age: float, list_of_patients:str) -> float:
+def num_older_than(age: float, list_of_patients: str) -> float:
     num = 0
     list_of_patients = list(list_of_patients.values())
     for patient in list_of_patients:
@@ -73,7 +75,7 @@ def num_older_than(age: float, list_of_patients:str) -> float:
     return num
 
 
-def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: str) -> int:
+def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: list[str]) -> list[str]:
     output = 0
     list_labs_final = []
     for labs in list_labs:
@@ -94,7 +96,7 @@ def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: str) -> int:
     return output
 
 
-def admission(patient_id: str, list_labs, list_patient:str) -> int:
+def admission(patient_id: str, list_labs, list_patient: str) -> int:
     # list of all lab date time for patient id specified
     date_time = []
     patient = list_patient[patient_id]
@@ -110,13 +112,9 @@ def admission(patient_id: str, list_labs, list_patient:str) -> int:
     return round(years)
 
 
-if __name__ == "__main__":
-    list_patients = parse_data_patient("pcp.txt", "lcp.txt")
-    print(num_older_than(51.2, list_patients))
-    list_labs = parse_data_lab("lcp.txt")
-    #print(type(list_labs))
-    #print(admission("FB2ABB23-C9D0-4D09-8464-49BF0B982F0F", list_labs, list_patients))
-    #print(sick_patients("URINALYSIS: RED BLOOD CELLS", ">", 1.8, list_labs))
-
-
-
+# if __name__ == "__main__":
+#     list_patients = parse_data_patient("pcp.txt", "lcp.txt")
+#     print(num_older_than(51.2, list_patients))
+#     list_labs = parse_data_lab("lcp.txt")
+#     print(admission("FB2ABB23-C9D0-4D09-8464-49BF0B982F0F", list_labs, list_patients))
+#     print(sick_patients("URINALYSIS: RED BLOOD CELLS", ">", 1.8, list_labs))
