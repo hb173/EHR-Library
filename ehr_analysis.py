@@ -5,7 +5,7 @@ import pytest
 class Patient:
     def __init__(
         self, patient_id: str, gender: str, race: str, dob: str, labss: str
-    ) -> str:
+    ) -> None:
         self.patient_id = patient_id
         self.gender = gender
         self.race = race
@@ -14,13 +14,13 @@ class Patient:
         pass
 
     @property
-    def Age(self):
+    def Age(self) -> int:
         age = (datetime.now() - self.dob).total_seconds() / 31536000
-        return age
+        return int(age)
 
 
 class Lab:
-    def __init__(self, labname: str, value: float, unit: str, labdate: str) -> str:
+    def __init__(self, labname: str, value: float, unit: str, labdate: str) -> None:
         self.labname = labname
         self.value = float(value)
         self.unit = unit
@@ -28,7 +28,7 @@ class Lab:
         self.labdate = datetime.strptime(labdate, "%Y-%m-%d %H:%M:%S.%f")
 
 
-def parse_data_lab(filename) -> list[Lab]:
+def parse_data_lab(filename: str) -> dict[str, list[str]]:
     patient_lab = {}
     first_line = 0
     with open(filename, "r") as data:
@@ -48,7 +48,7 @@ def parse_data_lab(filename) -> list[Lab]:
     return patient_lab
 
 
-def parse_data_patient(pat_filename: str, lab_filename: str) -> list[Patient]:
+def parse_data_patient(pat_filename: str, lab_filename: str) -> dict[str, Patient]:
     patient_lab = parse_data_lab(lab_filename)
     pat_objects = {}
     first_line = 0
@@ -66,7 +66,7 @@ def parse_data_patient(pat_filename: str, lab_filename: str) -> list[Patient]:
     return pat_objects
 
 
-def num_older_than(age: float, list_of_patients: str) -> float:
+def num_older_than(age: int, list_of_patients: str) -> int:
     num = 0
     list_of_patients = list(list_of_patients.values())
     for patient in list_of_patients:
@@ -75,7 +75,7 @@ def num_older_than(age: float, list_of_patients: str) -> float:
     return num
 
 
-def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: list[str]) -> list[str]:
+def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: list[str]) -> int:
     output = 0
     list_labs_final = []
     for labs in list_labs:
@@ -109,7 +109,7 @@ def admission(patient_id: str, list_labs, list_patient: str) -> int:
     dob = patient.dob
     age_file = min_date_time - dob
     years = age_file.total_seconds() / 31536000
-    return round(years)
+    return int(years)
 
 
 # if __name__ == "__main__":
