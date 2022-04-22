@@ -1,109 +1,120 @@
-import datetime
+from datetime import datetime
 import pytest
 
 
-"""
-Complexity: for fucntion Parse Data is O1+O1+ON(N+1)+O(1) 
-O(3) + O(N^2)+O(N) 
-Dropping 3 and N 
-= 0(N^2) as our complexity of this function.
-"""
+class Patient:
+    def __init__(
+        self, patient_id: str, gender: str, race: str, dob: str, labss: str
+    ) -> None:
+        self.patient_id = patient_id
+        self.gender = gender
+        self.race = race
+        self.dob = datetime.strptime(dob, "%Y-%m-%d %H:%M:%S.%f")
+        self.labss = labss
+        pass
+
+    @property
+    def Age(self) -> int:
+        age = (datetime.now() - self.dob).total_seconds() / 31536000
+        return int(age)
 
 
-def parse_data(filename: str) -> list[list[str]]:
-    with open(filename, "r") as data:  # O(1)
-        lines = []  # O(1)
-        for line in data:  # (N)
-            p = line.split("\t")  # O(N)
-            lines.append(p)  # O(1)
-    return lines  # O(1)
+class Lab:
+    def __init__(self, labname: str, value: float, unit: str, labdate: str) -> None:
+        self.labname = labname
+        self.value = float(value)
+        self.unit = unit
+
+        self.labdate = datetime.strptime(labdate, "%Y-%m-%d %H:%M:%S.%f")
 
 
-"""
-Complexity: for fucntion num_older_than is 
-0(1)+O(1)+O(N)(O1+O1)+O(1)+O(2)+O(1)
-we drop the constant factor
-= O(N) as our complexity of this function.
+def parse_data_lab(filename: str) -> dict[str, list[str]]:
+    patient_lab = {}
+    first_line = 0
+    with open(filename, "r") as data:
+        for line in data:
+            if first_line == 0:
+                first_line = 1
+                continue
+            p = line.split("\t")
+            p[-1] = p[-1][:-1]
+            p_id = p[0]
+            p_lab = Lab(p[2], p[3], p[4], p[5])
+            if p_id in patient_lab:
+                patient_lab[p_id].append(p_lab)
+            else:
+                patient_lab[p_id] = [p_lab]
 
-"""
-
-
-def num_older_than(age: float, data: list[list[str]]) -> float:
-    num = 0  # O(1)
-    for line in data[1:]:  # (N)
-
-        age_file = datetime.datetime.now() - datetime.datetime.strptime(
-            line[2], r"%Y-%m-%d %H:%M:%S.%f"
-        )  # O(1)
-        years = age_file.total_seconds() / 31536000  # O(1)
-
-        if years > age:  # O(1)
-            num = num + 1  # O(2)"""
-    return num  # O(1)
+    return patient_lab
 
 
-"""
-Complexity: for sick_patients is:
-= O(1)+O(1)+O(N)(O(1)+O(2)+O(1)+O(1)+O(2)+O(1)+O(1)+O(2)+(O)1)+O(1)
-= O(2)+O(N)+O(2N)+O(N)+O(N)+O(2N)+O(N)+O(N)+O(2N)+O(N)+O(1)
-= O(3)+O(12N)
-We drop the constant factor
-=0(N) as our complexity of this function.
-"""
+def parse_data_patient(pat_filename: str, lab_filename: str) -> dict[str, Patient]:
+    patient_lab = parse_data_lab(lab_filename)
+    pat_objects = {}
+    first_line = 0
+    with open(pat_filename, "r") as data:
+        for line in data:
+            if first_line == 0:
+                first_line = 1
+                continue
+            p = line.split("\t")
+            p[-1] = p[:-1]
+            p_lab_att = patient_lab[p[0]]
+
+            pat_objects[p[0]] = Patient(p[0], p[1], p[3], p[2], p_lab_att)
+
+    return pat_objects
 
 
-def sick_patients(
-    lab: str, gt_lt: str, value: float, data: list[list[str]]
-) -> list[str]:
-    output = []
-    for line in data[1:]:
+def num_older_than(age: int, list_of_patients: str) -> int:
+    num = 0
+    list_of_patients = list(list_of_patients.values())
+    for patient in list_of_patients:
+        if patient.Age >= age:
+            num = num + 1
+    return num
+
+
+def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: list[str]) -> int:
+    output = 0
+    list_labs_final = []
+    for labs in list_labs:
+        for k in list_labs[labs]:
+            list_labs_final.append(k)
+
+    for lab in list_labs_final:
+        print(type(lab))
         if gt_lt == ">":
-            if (line[2] == lab) and (float(line[3]) > value):
-                output.append(line[0])
+            if lab.labname == lab_n and (lab.value >= value):
+                output += 1
+
         elif gt_lt == "<":
-            if (line[2] == lab) and (float(line[3]) < value):
-                output.append(line[0])
+            if lab.labname == lab_n and (lab.value <= value):
+                output += 1
         else:
             raise ValueError("gt_lt is expected to be '<' or '>'")
     return output
 
 
-def admission(
-    patient_id: str, lab_data: list[list[str]], patient_data: list[list[str]]
-) -> int:
+def admission(patient_id: str, list_labs, list_patient: str) -> int:
     # list of all lab date time for patient id specified
     date_time = []
-
-    for i in range(len(lab_data)):
-        # header is counted and hence we look at all i values above 0
-        if i != 0:
-            if lab_data[i][0] == patient_id:
-                lab_date_time = lab_data[i][-1].rstrip("\n")
-
-                date_time.append(
-                    datetime.datetime.strptime(lab_date_time, r"%Y-%m-%d %H:%M:%S.%f")
-                )
-
+    patient = list_patient[patient_id]
+    lab = list_labs[patient_id]
+    for i in lab:
+        date_time.append(i.labdate)
     # first chronological admission of patient id
     min_date_time = min(date_time)
     # print("First Chronological Lab:", min_date_time)
-
-    dob = None
-    for i in patient_data:
-        if patient_id == i[0]:
-            dob = i[2]
-    age_file = min_date_time - datetime.datetime.strptime(dob, r"%Y-%m-%d %H:%M:%S.%f")
+    dob = patient.dob
+    age_file = min_date_time - dob
     years = age_file.total_seconds() / 31536000
+    return int(years)
 
-    return round(years)
 
-
-if __name__ == "__main__":
-    data1 = parse_data("PatientCorePopulatedTable.txt")
-    print(num_older_than(51.2, data1))
-    data = parse_data("LabsCorePopulatedTable.txt")
-    patient_data = parse_data("PatientCorePopulatedTable.txt")
-    lab_data = parse_data("LabsCorePopulatedTable.txt")
-
-    print(sick_patients("METABOLIC: ALBUMIN", ">", 5.95, data))
-    print(admission("81C5B13B-F6B2-4E57-9593-6E7E4C13B2CE", lab_data, patient_data))
+# if __name__ == "__main__":
+#     list_patients = parse_data_patient("pcp.txt", "lcp.txt")
+#     print(num_older_than(51.2, list_patients))
+#     list_labs = parse_data_lab("lcp.txt")
+#     print(admission("FB2ABB23-C9D0-4D09-8464-49BF0B982F0F", list_labs, list_patients))
+#     print(sick_patients("URINALYSIS: RED BLOOD CELLS", ">", 1.8, list_labs))
