@@ -1,4 +1,11 @@
 PatientID	AdmissionID	LabName	LabValue	LabUnits	LabDate	Time
+<<<<<<< HEAD
 977	1	Biogenlabs: covid2022	1.8	rbc/hpf	1992-07-01 01:36:17.910
 203	1	Pfizelabs:covi2023	1.9	rbc/hpf	1992-07-01 01:36:17.910
 928	1	Astrazen:delta2020	3	rbc/hpf	1992-07-01 01:36:17.910
+=======
+646	1	Biogenlabs: covid2022	1.8	rbc/hpf	1992-07-01 01:36:17.910
+728	1	Pfizelabs:covi2023	1.9	rbc/hpf	1992-07-01 01:36:17.910
+826	1	Astrazen:delta2020	3	rbc/hpf	1992-07-01 01:36:17.910
+928	6	CBC: ABSOLUTE LYMPHOCYTES	30		2007-02-18 08:57:43.957
+>>>>>>> main
