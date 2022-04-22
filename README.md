@@ -16,6 +16,6 @@ There's suite of tests in our EHR library using the pytest framework, for all fu
 
 
   ## Testing instructions
-   * To run the file, type python assingmentone.py in the terminal.
-   * To run pytest, type pytest assingmentone.py in the terminal. Make sure pytest package is installed.
+   * To run the file, type python ehr_analysis.py  in the terminal.
+   * To run pytest, type pytest ehr_analysis.py  in the terminal. Make sure pytest package is installed.
    
