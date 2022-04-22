@@ -23,7 +23,7 @@ from Part4Final import (
 )
 def test1(age, answer):
     parse_data_patient(
-        "/Users/himangshurajbhantana/Documents/Unfying data science/patients.txt"
+        "patients.txt"
     )
     patientids = cur.execute("Select patientID from patient").fetchall()
     patient_classes = [Patient(i[0]) for i in patientids]
@@ -43,7 +43,7 @@ def test1(age, answer):
 )
 def test_2(lab, gt_lt, value, answer):
     parse_data_lab(
-        "/Users/himangshurajbhantana/Documents/Unfying data science/index.txt"
+        "index.txt"
     )
     listlabs = cur.execute("Select UniqueID from lab").fetchall()
     lab_classes = [Lab(i[0]) for i in listlabs]
@@ -55,14 +55,12 @@ def test_2(lab, gt_lt, value, answer):
     [
         (
             "928",
-            77,
+            62,
         )
     ],
 )
 def test_3(patient_id, answer):
-    parse_data_patient(
-        "/Users/himangshurajbhantana/Documents/Unfying data science/patients.txt"
-    )
+    parse_data_patient("patients.txt")
     patientids = cur.execute("Select patientID from patient").fetchall()
     patient_classes = [Patient(i[0]) for i in patientids]
     assert answer == admission(patient_id, patient_classes)
