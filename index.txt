@@ -1,0 +1,4 @@
+PatientID	AdmissionID	LabName	LabValue	LabUnits	LabDate	Time
+977	1	Biogenlabs: covid2022	1.8	rbc/hpf	1992-07-01 01:36:17.910
+203	1	Pfizelabs:covi2023	1.9	rbc/hpf	1992-07-01 01:36:17.910
+928	1	Astrazen:delta2020	3	rbc/hpf	1992-07-01 01:36:17.910
