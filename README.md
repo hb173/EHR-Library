@@ -1,4 +1,4 @@
-# EHR cumulative project, part 3
+# EHR cumulative project
 
 This project is about developing a Python module that provides some simple analytical capabilities on some (synthetic) EHR data with suite of tests in our EHR library using the pytest framework, for all of the functions in our module. 
 
@@ -10,8 +10,10 @@ This project is about developing a Python module that provides some simple analy
  
 There's suite of tests in our EHR library using the pytest framework, for all functions, inorder to run the pytest please install the package:
  * Pip install pytest
-    
- # For contributors:
+ 
+ For SQL access: 
+ * Pip install sqllite3
+
 
   ## Testing instructions
    * To run the file, type python assingmentone.py in the terminal.
