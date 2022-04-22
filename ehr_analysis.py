@@ -3,20 +3,14 @@ import pytest
 import sqlite3
 
 
-con = sqlite3.connect("eexamplee106800000000000009.db")
+con = sqlite3.connect("part4.db")
 cur = con.cursor()
 
 
-cur.execute(
-    "CREATE TABLE patient (PatientID TEXT PRIMARY KEY, PatientGender TEXT, PatientDateofBirth TEXT, PatientRace TEXT, PatientMaritalStatus TEXT, PatientLanguage TEXT, PatientPopulationPercentageBelowPoverty TEXT)"
-)
-
-cur.execute(
-    "CREATE TABLE lab (UniqueID INTEGER PRIMARY KEY AUTOINCREMENT, PatientID TEXT NOT NULL, AdmissionID TEXT NOT NULL, LabName TEXT, LabValue REAL, LabUnits TEXT, LabDateTime TEXT)"
-)
-
-
 def parse_data_lab(filename: str) -> None:
+    cur.execute(
+        "CREATE TABLE lab (UniqueID INTEGER PRIMARY KEY AUTOINCREMENT, PatientID TEXT NOT NULL, AdmissionID TEXT NOT NULL, LabName TEXT, LabValue REAL, LabUnits TEXT, LabDateTime TEXT)"
+    )
     first_line = 0
     with open(filename, "r") as data:
         for line in data:
@@ -32,6 +26,9 @@ def parse_data_lab(filename: str) -> None:
 
 
 def parse_data_patient(filename: str) -> None:
+    cur.execute(
+        "CREATE TABLE patient (PatientID TEXT PRIMARY KEY, PatientGender TEXT, PatientDateofBirth TEXT, PatientRace TEXT, PatientMaritalStatus TEXT, PatientLanguage TEXT, PatientPopulationPercentageBelowPoverty TEXT)"
+    )
     first_line = 0
     with open(filename, "r") as data:
         for line in data:
@@ -116,15 +113,6 @@ class Patient:
         ).fetchall()
         labs_attend = [Lab(i[0]) for i in labss]
         return labs_attend
-
-
-# create patient list of classes
-patientids = cur.execute("Select patientID from patient").fetchall()
-patient_classes = [Patient(i[0]) for i in patientids]
-
-# create labs list of lab classes
-listlabs = cur.execute("Select UniqueID from lab").fetchall()
-lab_classes = [Lab(i[0]) for i in listlabs]
 
 
 def num_older_than(age: float, list_of_patients: str) -> float:
