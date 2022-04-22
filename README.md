@@ -5,14 +5,14 @@ This project is about developing a Python module that provides some simple analy
 # For end users:
 
 ## Setup/installation instructions:
- * Pip install Datetime : 
+ * pip install Datetime : 
     This is needed for the function `num_older_than(age: int, data: [[]]) -> int:` it takes the data and returns the number of patients older than a given age (in       years).
  
 There's suite of tests in our EHR library using the pytest framework, for all functions, inorder to run the pytest please install the package:
- * Pip install pytest
+ * pip install pytest
  
  For SQL access: 
- * Pip install sqllite3
+ * pip install sqllite3
 
 
   ## Testing instructions
