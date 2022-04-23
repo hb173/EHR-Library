@@ -30,9 +30,9 @@ def test1(age, lab_filename, patient_filename, answer):
         (
             "Pfizelabs:covi2023",
             ">",
-            1.8,
+            1.7,
             "index.txt",
-            1,
+           ['203'],
         )
     ],
 )
@@ -48,7 +48,7 @@ def test_2(lab, gt_lt, value, filename, answer):
             "977",
             "Patients.txt",
             "index.txt",
-            45,
+            44,
         )
     ],
 )
