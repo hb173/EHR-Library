@@ -20,11 +20,13 @@ class Patient:
 
 
 class Lab:
-    def __init__(self, labname: str, value: float, unit: str, labdate: str) -> None:
+    def __init__(
+        self, patient_id: str, labname: str, value: float, unit: str, labdate: str
+    ) -> None:
         self.labname = labname
+        self.patient_id = patient_id
         self.value = float(value)
         self.unit = unit
-
         self.labdate = datetime.strptime(labdate, "%Y-%m-%d %H:%M:%S.%f")
 
 
@@ -39,7 +41,7 @@ def parse_data_lab(filename: str) -> dict[str, list[str]]:
             p = line.split("\t")
             p[-1] = p[-1][:-1]
             p_id = p[0]
-            p_lab = Lab(p[2], p[3], p[4], p[5])
+            p_lab = Lab(p[0], p[2], p[3], p[4], p[5])
             if p_id in patient_lab:
                 patient_lab[p_id].append(p_lab)
             else:
@@ -75,25 +77,26 @@ def num_older_than(age: int, list_of_patients: str) -> int:
     return num
 
 
-def sick_patients(lab_n: str, gt_lt: str, value: float, list_labs: list[str]) -> int:
-    output = 0
+def sick_patients(
+    lab_n: str, gt_lt: str, value: float, list_labs: list[str]
+) -> list[str]:
+    patient_ids = []
     list_labs_final = []
     for labs in list_labs:
         for k in list_labs[labs]:
             list_labs_final.append(k)
 
     for lab in list_labs_final:
-        print(type(lab))
         if gt_lt == ">":
             if lab.labname == lab_n and (lab.value >= value):
-                output += 1
+                patient_ids.append(lab.patient_id)
 
         elif gt_lt == "<":
             if lab.labname == lab_n and (lab.value <= value):
-                output += 1
+                patient_ids.append(lab.patient_id)
         else:
             raise ValueError("gt_lt is expected to be '<' or '>'")
-    return output
+    return list(set(patient_ids))
 
 
 def admission(patient_id: str, list_labs, list_patient: str) -> int:
