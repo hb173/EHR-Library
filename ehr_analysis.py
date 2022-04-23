@@ -3,7 +3,7 @@ import pytest
 import sqlite3
 
 
-con = sqlite3.connect("part4.db")
+con = sqlite3.connect("part44.db")
 cur = con.cursor()
 
 
@@ -50,6 +50,13 @@ class Lab:
             """select LabName from lab where UniqueID = ?""", (self.uniqueid,)
         ).fetchone()
         return labname[0]
+
+    @property
+    def patient_id(self):
+        patient_id = cur.execute(
+            """select PatientID from lab where UniqueID = ?""", (self.uniqueid,)
+        ).fetchone()
+        return patient_id[0]
 
     @property
     def value(self):
@@ -126,18 +133,18 @@ def num_older_than(age: float, list_of_patients: str) -> float:
 def sick_patients(
     lab_n: str, gt_lt: str, value: float, list_labs_final: list[str]
 ) -> list[str]:
-    output = 0
+    patient_ids = []
     for lab in list_labs_final:
         if gt_lt == ">":
             if lab.labname == lab_n and (lab.value >= value):
-                output += 1
+                patient_ids.append(lab.patient_id)
 
         elif gt_lt == "<":
             if lab.labname == lab_n and (lab.value <= value):
-                output += 1
+                patient_ids.append(lab.patient_id)
         else:
             raise ValueError("gt_lt is expected to be '<' or '>'")
-    return output
+    return list(set(patient_ids))
 
 
 def admission(patient_id_: str, list_patient: str) -> int:
