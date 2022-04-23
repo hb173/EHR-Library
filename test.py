@@ -22,9 +22,7 @@ from Part4Final import (
     ],
 )
 def test1(age, answer):
-    parse_data_patient(
-        "patients.txt"
-    )
+    parse_data_patient("patients.txt")
     patientids = cur.execute("Select patientID from patient").fetchall()
     patient_classes = [Patient(i[0]) for i in patientids]
     assert answer == num_older_than(age, patient_classes)
@@ -37,14 +35,12 @@ def test1(age, answer):
             "Pfizelabs:covi2023",
             ">",
             1.8,
-            1,
+            ["203"],
         )
     ],
 )
 def test_2(lab, gt_lt, value, answer):
-    parse_data_lab(
-        "index.txt"
-    )
+    parse_data_lab("index.txt")
     listlabs = cur.execute("Select UniqueID from lab").fetchall()
     lab_classes = [Lab(i[0]) for i in listlabs]
     assert answer == sick_patients(lab, gt_lt, value, lab_classes)
